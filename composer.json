@@ -1,0 +1,23 @@
+{
+  "name": "grupotefly/asaas",
+  "type"       : "library",
+  "description": "Asaas.com PHP API Wrapper",
+  "keywords"   : ["Asaas", "API", "Payment SaaS", "Credit Card", "Boleto"],
+  "homepage": "https://github.com/Longinus-Ek",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Grupo Tefly",
+      "email": "suporte@tefly.com.br",
+      "homepage": "https://github.com/GrupoTefly/asaas"
+    }
+  ],
+  "require": {
+    "php": ">=7.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "Grupo\\Tefly\\": "src"
+    }
+  }
+}
