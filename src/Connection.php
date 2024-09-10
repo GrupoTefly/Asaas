@@ -21,7 +21,7 @@ class Connection {
             die('Tipo de homologação invalida');
         }
         $this->api_key = $token;
-        $this->base_url = "https://api" . (($this->api_status) ? 'sandbox' : 'www');
+        $this->base_url = "https://" . (($this->api_status) ? 'sandbox.asaas.com/api' : 'api.asaas.com');
 
         return $this;
     }
@@ -30,7 +30,7 @@ class Connection {
     public function get($url, $option = false, $custom = false )
     {
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->base_url .'.asaas.com/v3'. $url.$option);
+        curl_setopt($ch, CURLOPT_URL, $this->base_url . '/v3' . $url . $option);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -70,7 +70,7 @@ class Connection {
         }else{
             $options[] = "Content-Type: application/json";
         }
-        curl_setopt($ch, CURLOPT_URL, $this->base_url .'.asaas.com/api/v3'. $url);
+        curl_setopt($ch, CURLOPT_URL, $this->base_url . '/v3' . $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
