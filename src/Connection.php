@@ -3,7 +3,6 @@
 namespace Grupo\Tefly;
 
 use stdClass;
-
 class Connection {
     public $http;
     public $api_key;

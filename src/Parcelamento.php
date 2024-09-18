@@ -2,8 +2,6 @@
 
 namespace Grupo\Tefly;
 
-use Longinus\Asaas\Connection;
-
 class Parcelamento {
     public $http;
     protected $cobranca;

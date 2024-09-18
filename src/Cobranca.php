@@ -2,7 +2,6 @@
 
 namespace Grupo\Tefly;
 
-use Longinus\Asaas\Connection;
 use \Exception;
 
 class Cobranca {

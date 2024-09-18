@@ -1,8 +1,6 @@
 <?php
 
 namespace Grupo\Tefly;
-
-
 class Pix {
     //
     public $http;

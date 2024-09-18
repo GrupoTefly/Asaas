@@ -1,17 +1,12 @@
 <?php
 
 namespace Grupo\Tefly;
-
-
 class NotaFiscal {
-
     public $http;
-
     public function __construct(Connection $connection)
     {
         $this->http = $connection;
     }
-
 
     public function getAll($parametos = false){
         $filtro = '';

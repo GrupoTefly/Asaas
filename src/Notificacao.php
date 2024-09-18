@@ -1,10 +1,7 @@
 <?php
 
 namespace Grupo\Tefly;
-
-
 class Notificacao {
-    //
 
     public $http;
 

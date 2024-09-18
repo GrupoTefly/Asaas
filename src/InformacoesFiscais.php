@@ -2,7 +2,6 @@
 
 namespace Grupo\Tefly;
 
-
 class InformacoesFiscais {
 
     public $http;

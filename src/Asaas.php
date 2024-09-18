@@ -2,16 +2,6 @@
 
 namespace Grupo\Tefly;
 
-use Longinus\Asaas\Assinatura;
-use Longinus\Asaas\Cliente;
-use Longinus\Asaas\Cobranca;
-use Longinus\Asaas\Extrato;
-use Longinus\Asaas\Notificacao;
-use Longinus\Asaas\Transferencia;
-use Longinus\Asaas\Webhook;
-use Longinus\Asaas\WebhookSub;
-use Longinus\Asaas\InformacoesFinanceiras;
-
 class Asaas {
 
     public $cidade;

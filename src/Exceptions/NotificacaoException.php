@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-namespace Longinus\Asaas\Exceptions;
+namespace Grupo\Tefly\Exceptions;
 
 /**
  * Description of NotificacaoException

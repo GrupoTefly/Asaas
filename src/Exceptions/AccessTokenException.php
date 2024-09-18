@@ -1,6 +1,6 @@
 <?php
 
-namespace Longinus\Asaas\Exceptions;
+namespace Grupo\Tefly\Exceptions;
 
 use Exception;
 

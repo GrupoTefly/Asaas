@@ -1,17 +1,13 @@
 <?php
 
 namespace Grupo\Tefly;
-
-
 class PagarConta {
 
     public $http;
-
     public function __construct(Connection $connection)
     {
         $this->http = $connection;
     }
-
 
     public function getAll($parametos = false){
         $filtro = '';

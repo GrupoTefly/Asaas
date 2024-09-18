@@ -2,8 +2,6 @@
 
 namespace Grupo\Tefly;
 
-use Longinus\Asaas\Connection;
-use Longinus\Asaas\Exceptions\ClienteException;
 use Exception;
 
 /**

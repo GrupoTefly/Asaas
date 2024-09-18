@@ -1,8 +1,6 @@
 <?php
 
 namespace Grupo\Tefly;
-
-
 class ConsultaSerasa {
 
     public $http;

@@ -2,8 +2,6 @@
 
 namespace Grupo\Tefly;
 
-use Longinus\Asaas\Connection;
-
 class Conta {
     public $http;
     protected $cobranca;
