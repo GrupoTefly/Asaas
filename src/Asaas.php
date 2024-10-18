@@ -46,7 +46,7 @@ class Asaas {
         $this->InformacoesFiscais = new InformacoesFiscais($this->connection);
         $this->ConsultaSerasa = new ConsultaSerasa($this->connection);
         $this->webhook     = new Webhook($this->connection);
-        $this->webhookSub     = new webhookSub($this->connection);
+        $this->webhookSub     = new WebhookSub($this->connection);
         $this->Pix     = new Pix($this->connection);
         $this->Parcelamento     = new Parcelamento($this->connection);
         $this->Conta     = new Conta($this->connection);
