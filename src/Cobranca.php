@@ -177,4 +177,10 @@ class Cobranca {
             return 'Erro ao definir o cliente. - ' . $e->getMessage();
         }
     }
+
+    /* Pega os dados pix de uma parcela */
+    public function getPixQrCode($id){
+        return $this->http->get('/payments/'.$id.'/pixQrCode');
+    }
+
 }
