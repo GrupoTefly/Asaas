@@ -26,6 +26,7 @@ class Asaas {
     public $SubConta;
     public $InformacoesFinanceiras;
     public $PixAutomatico;
+    public $CobrancaResumo;
 
     private $connection;
 
@@ -55,6 +56,7 @@ class Asaas {
         $this->whitelabel     = new WhiteLabel($this->connection);
         $this->InformacoesFinanceiras = new InformacoesFinanceiras($this->connection);
         $this->PixAutomatico = new PixAutomatico($this->connection);
+        $this->CobrancaResumo = new CobrancaResumo($this->connection);
     }
 
     public function Assinatura(){
@@ -172,6 +174,12 @@ class Asaas {
     {
         $this->informacoesFinanceiras = new InformacoesFinanceiras($this->connection);
         return $this->informacoesFinanceiras;
+    }
+
+    public function CobrancaResumo()
+    {
+        $this->CobrancaResumo = new CobrancaResumo($this->connection);
+        return $this->CobrancaResumo;
     }
 
 }

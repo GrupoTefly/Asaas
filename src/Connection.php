@@ -56,6 +56,33 @@ class Connection {
         return $response;
     }
 
+    public function put($url, $params)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $this->base_url . '/v3' . $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_HEADER, FALSE);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($params));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            "Content-Type: application/json",
+            "access_token: " . $this->api_key
+        ]);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+        $response = json_decode($response);
+
+        if (empty($response)) {
+            $response = new stdClass();
+            $response->error = [];
+            $response->error[0] = new stdClass();
+            $response->error[0]->description = 'Tivemos um problema ao processar a requisição.';
+        }
+
+        return $response;
+    }
+
     public function post($url, $params, $archive = false)
     {
         $params = $archive ? $params : json_encode($params);
