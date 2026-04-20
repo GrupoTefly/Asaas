@@ -98,6 +98,9 @@ $cobranca = $Asaas->Cobranca()->dezconfirmacao(id);
 
 // Deleta uma cobrança
 $Asaas->Cobranca()->delete(123);
+
+// Retorna o QR Code Pix de uma cobrança
+$Asaas->Cobranca()->getPixQrCode($id);
 ```
 
 
@@ -116,6 +119,9 @@ if($Pix->success){
 
 //Consulta se foi efetivado o pagamento via Pix, (Obs: Recomendo um post a cada 30s, ou um botão para confirmação do pagamento, assim não sobrecarregado o seu sistema e nem o do Asaas ;) ).
 $retorno = $Asaas->Pix()->get($id_cobranca);
+
+// Retorna a listagem de transações Pix
+$transacoes = $Asaas->Pix()->getAll(array $filtros);
 
 ```
 
@@ -780,13 +786,138 @@ Minha Conta
 ------------
 
 ```php
-//Recuperar dados comerciais
+// Recuperar dados comerciais
 $MinhaConta = $Asaas->MinhaConta()->get();
 
-// Recuperar configurações de personalização
+// Atualizar dados comerciais
+$MinhaConta = $Asaas->MinhaConta()->update(array $dados);
+
+// Recuperar configurações de personalização do checkout
 $MinhaConta = $Asaas->MinhaConta()->getConf();
 
+// Salvar configurações de personalização do checkout (multipart/form-data, aceita logoFile)
+$MinhaConta = $Asaas->MinhaConta()->saveConf(array $dados);
+
+// Recuperar número da conta Asaas (agência, conta, dígito)
+$MinhaConta = $Asaas->MinhaConta()->getNumeroConta();
+
+// Recuperar taxas da conta
+$MinhaConta = $Asaas->MinhaConta()->getTaxas();
+
+// Verificar status do cadastro
+$MinhaConta = $Asaas->MinhaConta()->getStatus();
+
+// Recuperar WalletId
+$MinhaConta = $Asaas->MinhaConta()->getWalletId();
+
+// Excluir subconta BaaS (opcional: motivo da exclusão)
+$MinhaConta = $Asaas->MinhaConta()->deleteBaas($removeReason);
+
 ```
+Transferência
+------------
+
+```php
+// Retorna a listagem de transferências
+$transferencias = $Asaas->Transferencia()->getAll(array $filtros);
+
+// Consulta o saldo disponível
+$saldo = $Asaas->Transferencia()->consultaSaldo();
+
+// Consulta o WalletId da conta
+$wallet = $Asaas->Transferencia()->consultaWalletId();
+
+// Realiza uma transferência
+$transferencia = $Asaas->Transferencia()->conta(array $dados);
+```
+
+
+Extrato
+------------
+
+```php
+// Retorna o extrato de transações financeiras
+$extrato = $Asaas->Extrato()->getAll(array $parametros);
+
+// Parâmetros disponíveis
+$parametros = array(
+    'startDate'  => '2024-01-01', // Data inicial (Y-m-d)
+    'finishDate' => '2024-12-31', // Data final (Y-m-d)
+    'offset'     => 0,
+    'limit'      => 10,
+);
+```
+
+
+Informações Financeiras
+------------
+
+```php
+// Retorna o saldo da conta
+$saldo = $Asaas->InformacoesFinanceiras()->saldo();
+```
+
+
+Parcelamento
+------------
+
+```php
+// Retorna a listagem de parcelamentos
+$parcelamentos = $Asaas->Parcelamento()->getAll(array $filtros);
+
+// Retorna os dados de um parcelamento pelo Id
+$parcelamento = $Asaas->Parcelamento()->getById($id);
+
+// Retorna parcelamentos de um cliente
+$parcelamentos = $Asaas->Parcelamento()->getByCustomer($customer_id);
+
+// Retorna o link do carnê em PDF
+$link = $Asaas->Parcelamento()->getBeefPdf($id);
+
+// Estorna um parcelamento
+$Asaas->Parcelamento()->estorno($id);
+
+// Deleta um parcelamento
+$Asaas->Parcelamento()->delete($id);
+```
+
+
+Pix Automático
+------------
+
+```php
+// Cria uma autorização de Pix Automático
+$autorizacao = $Asaas->PixAutomatico()->create(array $dados);
+
+// Retorna a listagem de autorizações
+$autorizacoes = $Asaas->PixAutomatico()->getAll(array $filtros);
+
+// Recupera uma autorização pelo Id
+$autorizacao = $Asaas->PixAutomatico()->getById($id);
+
+// Cancela uma autorização
+$Asaas->PixAutomatico()->cancel($id);
+
+// Recupera uma instrução de pagamento pelo Id
+$instrucao = $Asaas->PixAutomatico()->getPaymentInstructionById($id);
+
+// Lista instruções de pagamento
+$instrucoes = $Asaas->PixAutomatico()->getPaymentInstructions(array $filtros);
+```
+
+
+Cidades
+------------
+
+```php
+// Retorna a listagem de cidades
+$cidades = $Asaas->Cidade()->getAll(array $filtros);
+
+// Retorna os dados de uma cidade pelo Id
+$cidade = $Asaas->Cidade()->getById($id);
+```
+
+
 Web Hook
 ------------
 
