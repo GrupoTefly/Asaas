@@ -16,12 +16,15 @@ class PixAutomatico
      *
      * @param array $dados
      *   Campos obrigatórios:
-     *     - frequency (string): WEEKLY | MONTHLY | QUARTERLY | SEMIANNUALLY | ANNUALLY
      *     - contractId (string, max 35): Identificador do objeto da autorização
      *     - startDate (date): Início da vigência
      *     - customerId (string): Identificador único do cliente
      *     - immediateQrCode (array): Cobrança imediata atrelada à ativação
-     *   Campos opcionais:
+     *   Campos opcionais (com valor padrão):
+     *     - frequency (string): WEEKLY | MONTHLY | QUARTERLY | SEMIANNUALLY | ANNUALLY (padrão: MONTHLY)
+     *     - paymentCreationMode (string): (padrão: SUBSCRIPTION)
+     *     - retryPolicy (string): (padrão: ALLOW_THREE_IN_SEVEN_DAYS)
+     *   Demais campos opcionais:
      *     - finishDate (date): Fim da vigência (omitir para prazo indeterminado)
      *     - value (float): Valor fixo para cobranças periódicas
      *     - description (string, max 35): Descrição
@@ -30,6 +33,14 @@ class PixAutomatico
      */
     public function create(array $dados)
     {
+        $padroes = [
+            'frequency' => 'MONTHLY',
+            'paymentCreationMode' => 'SUBSCRIPTION',
+            'retryPolicy' => 'ALLOW_THREE_IN_SEVEN_DAYS',
+        ];
+
+        $dados = array_merge($padroes, $dados);
+
         return $this->http->post('/pix/automatic/authorizations', $dados);
     }
 
