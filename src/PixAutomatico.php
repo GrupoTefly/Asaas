@@ -22,13 +22,24 @@ class PixAutomatico
      *     - immediateQrCode (array): Cobrança imediata atrelada à ativação
      *   Campos opcionais (com valor padrão):
      *     - frequency (string): WEEKLY | MONTHLY | QUARTERLY | SEMIANNUALLY | ANNUALLY (padrão: MONTHLY)
-     *     - paymentCreationMode (string): (padrão: SUBSCRIPTION)
+     *     - paymentCreationMode (string): SUBSCRIPTION | MANUAL (padrão: SUBSCRIPTION)
      *     - retryPolicy (string): (padrão: ALLOW_THREE_IN_SEVEN_DAYS)
      *   Demais campos opcionais:
      *     - finishDate (date): Fim da vigência (omitir para prazo indeterminado)
      *     - value (float): Valor fixo para cobranças periódicas
      *     - description (string, max 35): Descrição
      *     - minLimitValue (float): Valor mínimo (apenas para autorizações sem valor fixo)
+     *
+     * ATENÇÃO paymentCreationMode:
+     *   - SUBSCRIPTION (padrão): o Asaas cria as cobranças automaticamente, na frequência definida.
+     *   - MANUAL: o Asaas NÃO cria nenhuma cobrança sozinho. A autorização fica ativa esperando,
+     *     e é responsabilidade da aplicação chamar createPayment() a cada ciclo de cobrança.
+     *     Se optar por MANUAL, é necessário ter um controle próprio (ex: rotina/cron) para
+     *     disparar as cobranças, senão a autorização nunca será cobrada.
+     *   Não existe endpoint de atualização de autorização — para trocar o paymentCreationMode
+     *   (ou frequency/value/retryPolicy) de uma autorização já criada é preciso cancel() + create()
+     *   de uma nova (o que exige nova aprovação do pagador no banco).
+     *
      * @return array
      */
     public function create(array $dados)
@@ -42,6 +53,39 @@ class PixAutomatico
         $dados = array_merge($padroes, $dados);
 
         return $this->http->post('/pix/automatic/authorizations', $dados);
+    }
+
+    /**
+     * Cria uma cobrança vinculada a uma autorização de Pix Automático.
+     *
+     * Necessário apenas quando a autorização foi criada com
+     * paymentCreationMode = MANUAL, já que nesse modo o Asaas não gera
+     * as cobranças sozinho — é a aplicação quem deve chamar este método
+     * a cada ciclo de cobrança (ex: via cron), senão a autorização nunca
+     * é cobrada. Quando paymentCreationMode = SUBSCRIPTION, o Asaas já
+     * cria as cobranças automaticamente e este método não deve ser usado.
+     *
+     * @param string $autorizacaoId Identificador único da autorização de Pix Automático
+     * @param array $dados
+     *   Campos obrigatórios:
+     *     - customer (string): Identificador único do cliente
+     *     - value (float): Valor da cobrança
+     *     - dueDate (date): Data de vencimento
+     *   Campos opcionais:
+     *     - billingType (string): padrão PIX
+     *     - description (string): Descrição
+     * @return array
+     */
+    public function createPayment($autorizacaoId, array $dados)
+    {
+        $padroes = [
+            'billingType' => 'PIX',
+        ];
+
+        $dados = array_merge($padroes, $dados);
+        $dados['pixAutomaticAuthorizationId'] = $autorizacaoId;
+
+        return $this->http->post('/payments', $dados);
     }
 
     /**

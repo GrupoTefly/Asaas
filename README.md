@@ -887,6 +887,7 @@ Pix Automático
 
 ```php
 // Cria uma autorização de Pix Automático
+// Padrão aplicado quando não informado: frequency=MONTHLY, paymentCreationMode=SUBSCRIPTION, retryPolicy=ALLOW_THREE_IN_SEVEN_DAYS
 $autorizacao = $Asaas->PixAutomatico()->create(array $dados);
 
 // Retorna a listagem de autorizações
@@ -898,12 +899,20 @@ $autorizacao = $Asaas->PixAutomatico()->getById($id);
 // Cancela uma autorização
 $Asaas->PixAutomatico()->cancel($id);
 
+// Cria uma cobrança vinculada a uma autorização (obrigatório quando paymentCreationMode = MANUAL)
+$cobranca = $Asaas->PixAutomatico()->createPayment($autorizacaoId, array $dados);
+
 // Recupera uma instrução de pagamento pelo Id
 $instrucao = $Asaas->PixAutomatico()->getPaymentInstructionById($id);
 
 // Lista instruções de pagamento
 $instrucoes = $Asaas->PixAutomatico()->getPaymentInstructions(array $filtros);
 ```
+
+> **Atenção — `paymentCreationMode`:**
+> - `SUBSCRIPTION` (padrão desta lib): o Asaas cria as cobranças automaticamente, na frequência definida em `frequency`.
+> - `MANUAL`: o Asaas **não cria nenhuma cobrança sozinho**. A autorização fica só ativa aguardando; é responsabilidade da sua aplicação chamar `createPayment()` a cada ciclo de cobrança (normalmente via um cron/rotina própria). Se você não tiver esse controle, a autorização nunca será cobrada.
+> - Não existe endpoint de atualização de autorização. Para trocar `paymentCreationMode`, `frequency`, `value` ou `retryPolicy` de uma autorização já criada, é preciso `cancel()` a atual e `create()` uma nova — o que exige nova aprovação do pagador no banco.
 
 
 Cidades
